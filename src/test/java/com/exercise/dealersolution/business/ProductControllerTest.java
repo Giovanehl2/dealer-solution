@@ -3,14 +3,15 @@ package com.exercise.dealersolution.business;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.BDDMockito.given;
 
+import com.exercise.dealersolution.repository.DbProduct;
 import com.exercise.dealersolution.repository.Product;
+
 import java.time.LocalDate;
 import java.time.Month;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+
+import java.util.HashSet;
+import java.util.Set;
+
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -20,76 +21,79 @@ import org.mockito.junit.jupiter.MockitoExtension;
 @ExtendWith(MockitoExtension.class)
 class ProductControllerTest {
 
-  @Mock
-  private Product productRepository;
+    @Mock
+    private DbProduct productRepository;
 
-  @InjectMocks
-  private ProductController productController;
+    @InjectMocks
+    private ProductController productController;
 
-  @Test
-  void shouldGetAllProducts() {
-    final Map<Integer, String[]> products = new HashMap<Integer, String[]>()
-    {{
-      put(1, new String[]{"SUV", "1", "120,000.00", "100", "31/12/2022"});
-      put(2, new String[]{"Sedan", "1", "100,000.00", "100", "20/11/2022"});
-      put(3, new String[]{"Hatch1", "0", "40.000,00", "100", "31/12/2099"});
-    }};
-    given(productRepository.todos()).willReturn(products);
+    @Test
+    void shouldGetAllProducts() {
+        final Set<Product> products = new HashSet<>();
 
-    final Map<Integer, String[]> retrievedObjects = productController.retrieveAll();
+        products.add(new Product(1, "SUV", 1, Double.parseDouble("120000.00"), 100, "31/12/2022"));
+        products.add(new Product(2, "Sedan", 1, Double.parseDouble("100000.00"), 100, "20/11/2022"));
+        products.add(new Product(3, "Hatch1", 0, Double.parseDouble("40000.00"), 100, "31/12/2099"));
 
-    assertEquals(products, retrievedObjects);
-  }
+        given(productRepository.todos()).willReturn(products);
 
-  @Test
-  void shouldGetAllAvailableProducts() {
-    List<List<String>> expected = new ArrayList<>();
-    expected.add(Arrays.asList("1","SUV", "1", "120,000.00", "100", "31/12/2022"));
-    expected.add(Arrays.asList("2","Sedan", "1", "100,000.00", "100", "20/11/2022"));
+        final Set<Product> retrievedObjects = productController.retrieveAll();
 
-    final Map<Integer, String[]> products = new HashMap<Integer, String[]>()
-    {{
-      put(1, new String[]{"SUV", "1", "120,000.00", "100", "31/12/2022"});
-      put(2, new String[]{"Sedan", "1", "100,000.00", "100", "20/11/2022"});
-    }};
-    given(productRepository.getAvailableProducts()).willReturn(products);
+        assertEquals(products, retrievedObjects);
+    }
 
-    final List<List<String>> availableProducts = productController.getAll();
+    @Test
+    void shouldGetAllAvailableProducts() {
+        final Set<Product> expected = new HashSet<>();
 
-    assertTrue(!availableProducts.isEmpty());
-  }
+        expected.add(new Product(1, "SUV", 1, Double.parseDouble("120000.00"), 100, "31/12/2022"));
+        expected.add(new Product(2, "Sedan", 1, Double.parseDouble("100000.00"), 100, "20/11/2022"));
 
-  @Test
-  void shouldRetrieveDeadline() {
-    LocalDate expectedDeadline = LocalDate.of(2022, Month.DECEMBER, 31);
-    final Map<Integer, String[]> products = new HashMap<Integer, String[]>()
-    {{
-      put(1, new String[]{"SUV", "1", "120,000.00", "100", "31/12/2022"});
-    }};
-    given(productRepository.retrieveUnavailable()).willReturn(products);
+        final Set<Product> products = new HashSet<>();
 
-    final LocalDate retrieveDeadline = productController.retrieveDeadline("1");
+        products.add(new Product(1, "SUV", 1, Double.parseDouble("120000.00"), 100, "31/12/2022"));
+        products.add(new Product(2, "Sedan", 1, Double.parseDouble("100000.00"), 100, "20/11/2022"));
 
-    assertEquals(expectedDeadline, retrieveDeadline);
-  }
+        given(productRepository.getAvailableProducts()).willReturn(products);
 
-  @Test
-  void shouldAddNewProductModel() {
-  }
+        final Set<Product> availableProducts = productController.getAll();
 
-  @Test
-  void shouldDeleteAllProducts() {
-  }
+        assertTrue(!availableProducts.isEmpty());
+    }
 
-  @Test
-  void shouldDeleteSpecificProduct() {
-  }
+    @Test
+    void shouldRetrieveDeadline() {
+        LocalDate expectedDeadline = LocalDate.of(2022, Month.DECEMBER, 31);
+        final Set<Product> products = new HashSet<>();
 
-  @Test
-  void shouldUpdateProduct() {
-  }
+        products.add(new Product(1, "SUV", 1, Double.parseDouble("120000.00"), 100, "31/12/2022"));
 
-  @Test
-  void shouldUpdatePriceProduct() {
-  }
+        given(productRepository.retrieveUnavailable()).willReturn(products);
+
+        final LocalDate retrieveDeadline = productController.retrieveDeadline(1);
+
+        assertEquals(expectedDeadline, retrieveDeadline);
+    }
+
+    @Test
+    void shouldAddNewProductModel() {
+    }
+
+    @Test
+    void shouldDeleteAllProducts() {
+    }
+
+    @Test
+    void shouldDeleteSpecificProduct() {
+    }
+
+    @Test
+    void shouldUpdateProduct() {
+    }
+
+    @Test
+    void shouldUpdatePriceProduct() {
+    }
+
+
 }
