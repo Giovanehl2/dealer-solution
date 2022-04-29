@@ -2,7 +2,9 @@ package com.exercise.dealersolution.repository;
 
 import lombok.AllArgsConstructor;
 
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 
@@ -10,6 +12,8 @@ import lombok.Setter;
 @AllArgsConstructor
 @Setter
 @Getter
+@NoArgsConstructor
+@EqualsAndHashCode
 public class Product {
 
     private Integer productModelId;
@@ -18,4 +22,6 @@ public class Product {
     private Double price;
     private Integer quantity;
     private String deadlineProduct;
+
+
 }

@@ -24,7 +24,8 @@ public class DbProduct {
 
   }
 
-  public Set<Product> todos(){ return this.produtos;}
+  public Set<Product> todos(){
+    return this.produtos;}
 
 
   public Set<Product> retrieveOutdated(){
